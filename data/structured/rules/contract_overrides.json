@@ -1,0 +1,66 @@
+{
+  "rules_version": "2026-08-16",
+  "description": "Per-account overrides extracted from signed agreements. Highest authority tier. Accounts absent from this file fall back to the default policy rules, so new accounts need no code change.",
+  "accounts": {
+    "ACCT-001": {
+      "doc_id": "CONTRACT-ACCT-001",
+      "customer": "Northstar Logistics",
+      "status": "ACTIVE",
+      "term_start": "2026-01-01",
+      "term_end": "2026-12-31",
+      "sla": {
+        "clause": "1. Support terms",
+        "quote": "For Northstar Logistics, the following first-response targets replace ParcelPilot's standard support-policy targets: P1: 15 minutes, 24x7; P2: 1 hour; P3: 8 business hours.",
+        "replaces_defaults": true,
+        "targets": {
+          "P1": { "value": 15, "unit": "minutes", "clock": "24x7" },
+          "P2": { "value": 1, "unit": "hours", "clock": "24x7" },
+          "P3": { "value": 8, "unit": "business_hours", "clock": "business" }
+        }
+      },
+      "cancellation": {
+        "clause": "2. Shipment cancellation",
+        "quote": "Northstar may cancel any BOOKED shipment before pickup with no cancellation fee, regardless of how long ago the shipment was booked. Once a shipment is PICKED_UP, the standard return-to-origin process applies.",
+        "booked_fee_waived": true,
+        "booked_fee_inr": 0,
+        "picked_up_defers_to_sop": true
+      },
+      "service_credit": {
+        "clause": "3. Service credits",
+        "quote": "Monthly aggregate service credits are capped at INR 5,000. Unless this agreement states otherwise, the current ParcelPilot service-credit SOP applies.",
+        "defer_to_sop": true,
+        "monthly_aggregate_cap_inr": 5000
+      }
+    },
+    "ACCT-002": {
+      "doc_id": "CONTRACT-ACCT-002",
+      "customer": "LumenWorks",
+      "status": "ACTIVE",
+      "term_start": "2026-03-01",
+      "term_end": "2027-02-28",
+      "sla": {
+        "clause": "1. Support terms",
+        "quote": "P1: 2 business hours; P2: 4 business hours; P3: 2 business days. No weekend or after-hours support coverage.",
+        "replaces_defaults": true,
+        "coverage": "business_hours_only",
+        "targets": {
+          "P1": { "value": 2, "unit": "business_hours", "clock": "business" },
+          "P2": { "value": 4, "unit": "business_hours", "clock": "business" },
+          "P3": { "value": 2, "unit": "business_days", "clock": "business" }
+        }
+      },
+      "cancellation": {
+        "clause": "2. Cancellation terms",
+        "quote": "No special cancellation-fee waiver applies. Use the current ParcelPilot Cancellation & Service Credit SOP.",
+        "defer_to_sop": true
+      },
+      "service_credit": {
+        "clause": "3. Failed-pickup credits",
+        "quote": "If a pickup is more than 4 hours past the end of the scheduled pickup window, the carrier is at fault, and the customer is not at fault, LumenWorks receives a fixed INR 300 service credit. This clause replaces the default failed-pickup credit amount and timing threshold in the SOP.",
+        "replaces_default": true,
+        "delay_threshold_hours": 4,
+        "flat_amount_inr": 300
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "description": "Mocked internal identity directory. In production this is your IdP (SSO) + an account-assignment service; the shape of what the tool layer consumes stays identical.",
+  "roles": {
+    "support_agent": {
+      "label": "Support Agent",
+      "permissions": [
+        "docs.read",
+        "docs.read_contract",
+        "data.read_scoped",
+        "signals.read_scoped",
+        "action.propose",
+        "action.execute"
+      ],
+      "account_scope": "assigned",
+      "limits": { "max_credit_inr_without_approval": 1000 }
+    },
+    "ops_manager": {
+      "label": "Ops Manager",
+      "permissions": [
+        "docs.read",
+        "docs.read_contract",
+        "data.read_all",
+        "signals.read_all",
+        "action.propose",
+        "action.execute",
+        "action.approve_credit",
+        "audit.read"
+      ],
+      "account_scope": "all",
+      "limits": { "max_credit_inr_without_approval": 5000 }
+    },
+    "analyst_readonly": {
+      "label": "Ops Analyst (read-only)",
+      "permissions": ["docs.read", "data.read_redacted", "signals.read_all"],
+      "account_scope": "all",
+      "redact_customer_content": true,
+      "limits": { "max_credit_inr_without_approval": 0 }
+    }
+  },
+  "users": [
+    {
+      "user_id": "rohit",
+      "name": "Rohit Sharma",
+      "role": "support_agent",
+      "assigned_accounts": ["ACCT-001", "ACCT-003", "ACCT-004"]
+    },
+    {
+      "user_id": "maya",
+      "name": "Maya Iyer",
+      "role": "support_agent",
+      "assigned_accounts": ["ACCT-001", "ACCT-002"]
+    },
+    {
+      "user_id": "priya",
+      "name": "Priya Mehta",
+      "role": "ops_manager",
+      "assigned_accounts": []
+    },
+    {
+      "user_id": "sam",
+      "name": "Sam Verma",
+      "role": "analyst_readonly",
+      "assigned_accounts": []
+    }
+  ]
+}

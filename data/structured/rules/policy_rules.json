@@ -1,0 +1,174 @@
+{
+  "rules_version": "2026-08-16",
+  "description": "Machine-usable projection of the CURRENT authoritative documents. Every rule carries a pointer back to the clause it came from so the agent can cite prose, not code. Regenerate with scripts/build_rules.py when a source document changes.",
+  "generated_from": [
+    { "doc_id": "POL-SUPPORT-V3", "effective_date": "2026-05-01" },
+    { "doc_id": "SOP-CANCEL-CREDIT-V4", "effective_date": "2026-06-15" },
+    { "doc_id": "DOC-PRODUCT-OPS", "effective_date": "2026-08-14" }
+  ],
+  "source_precedence": {
+    "order": ["contract", "policy", "sop", "product_doc", "historical_ticket"],
+    "source": {
+      "doc_id": "POL-SUPPORT-V3",
+      "clause": "1. Scope and source precedence",
+      "quote": "When sources conflict, use the signed customer agreement first, then the current support policy, then current product documentation. Historical tickets and internal notes are context only and may contain incorrect past guidance."
+    }
+  },
+  "severity_definitions": {
+    "P1": {
+      "label": "Critical",
+      "definition": "Complete production outage preventing all shipment creation for a customer, confirmed security incident or suspected credential exposure, or another event causing immediate material business risk with no workaround.",
+      "signals": [
+        "all shipment creation is failing",
+        "every user",
+        "http 500",
+        "complete outage",
+        "production outage",
+        "cannot create any shipment",
+        "api key",
+        "credential",
+        "secret leaked",
+        "security incident",
+        "token exposed",
+        "data breach"
+      ],
+      "source": { "doc_id": "POL-SUPPORT-V3", "clause": "2. Severity definitions" }
+    },
+    "P2": {
+      "label": "High",
+      "definition": "Major feature unavailable or materially degraded for a customer, but core operations remain possible or a workaround exists.",
+      "signals": [
+        "bulk upload fails",
+        "upload fails",
+        "feature unavailable",
+        "degraded",
+        "intermittent failure",
+        "workaround",
+        "partially failing"
+      ],
+      "source": { "doc_id": "POL-SUPPORT-V3", "clause": "2. Severity definitions" }
+    },
+    "P3": {
+      "label": "Normal",
+      "definition": "Minor defect, how-to question, configuration request, or issue with limited operational impact.",
+      "signals": [
+        "how do we",
+        "how do i",
+        "question",
+        "change the billing contact",
+        "configuration",
+        "minor",
+        "still shows booked",
+        "status not updated"
+      ],
+      "source": { "doc_id": "POL-SUPPORT-V3", "clause": "2. Severity definitions" }
+    }
+  },
+  "sla_defaults": {
+    "source": { "doc_id": "POL-SUPPORT-V3", "clause": "3. Default first-response targets" },
+    "plans": {
+      "Enterprise": {
+        "P1": { "value": 30, "unit": "minutes", "clock": "24x7" },
+        "P2": { "value": 2, "unit": "hours", "clock": "24x7" },
+        "P3": { "value": 1, "unit": "business_days", "clock": "business" }
+      },
+      "Growth": {
+        "P1": { "value": 2, "unit": "business_hours", "clock": "business" },
+        "P2": { "value": 4, "unit": "business_hours", "clock": "business" },
+        "P3": { "value": 2, "unit": "business_days", "clock": "business" }
+      },
+      "Standard": {
+        "P1": { "value": 4, "unit": "business_hours", "clock": "business" },
+        "P2": { "value": 1, "unit": "business_days", "clock": "business" },
+        "P3": { "value": 2, "unit": "business_days", "clock": "business" }
+      }
+    }
+  },
+  "escalation": {
+    "p1_immediate": true,
+    "state_breach_openly": true,
+    "source": { "doc_id": "POL-SUPPORT-V3", "clause": "4. Escalation" }
+  },
+  "cancellation": {
+    "source": { "doc_id": "SOP-CANCEL-CREDIT-V4", "clause": "1. Order cancellation" },
+    "states": {
+      "DRAFT": { "cancellable": true, "fee_inr": 0, "note": "May be cancelled with no fee." },
+      "BOOKED": {
+        "cancellable": true,
+        "free_window_minutes": 30,
+        "fee_after_window_inr": 250,
+        "waivable_by_contract": true,
+        "note": "No fee within 30 minutes of booking. After 30 minutes, charge INR 250 unless a customer agreement explicitly waives the cancellation fee."
+      },
+      "PICKED_UP": {
+        "cancellable": false,
+        "alternative_workflow": "return-to-origin",
+        "note": "Do not cancel. Use the return-to-origin workflow if the customer wants the parcel returned."
+      },
+      "DELIVERED": { "cancellable": false, "note": "Cannot be cancelled." }
+    }
+  },
+  "service_credit": {
+    "source": { "doc_id": "SOP-CANCEL-CREDIT-V4", "clause": "2. Failed-pickup service credits" },
+    "delay_threshold_hours": 2,
+    "measured_from": "pickup_window_end",
+    "conditions": ["carrier_fault == true", "customer_fault == false"],
+    "amount_rule": "min(flat_cap_inr, percent_of_fee% of shipment_fee_inr)",
+    "flat_cap_inr": 500,
+    "percent_of_fee": 10,
+    "contract_may_override": ["delay_threshold_hours", "amount", "cap"]
+  },
+  "approval": {
+    "source": { "doc_id": "SOP-CANCEL-CREDIT-V4", "clause": "3. Approval and uncertainty" },
+    "manager_approval_above_inr": 1000,
+    "no_promise_when_unknown": ["carrier_fault", "pickup_timing", "customer_fault"],
+    "conflict_rule": "When data conflicts, identify the conflict and request verification before a state-changing action."
+  },
+  "product": {
+    "source": { "doc_id": "DOC-PRODUCT-OPS", "clause": "1. Plan capabilities" },
+    "bulk_upload": {
+      "available_plans": ["Growth", "Enterprise"],
+      "supported_rows_per_csv": 5000,
+      "unavailable_plans": ["Standard"]
+    },
+    "known_issues": [
+      {
+        "id": "KI-208",
+        "title": "Bulk Upload failures on large CSVs",
+        "status": "Investigating",
+        "opened": "2026-08-10",
+        "match_signals": ["bulk upload", "csv", "upload fails", "rows"],
+        "affects_plans": ["Growth", "Enterprise"],
+        "threshold_rows": 3000,
+        "workaround": "Split the upload into files below 3,000 rows. Individual shipment creation is unaffected."
+      },
+      {
+        "id": "KI-211",
+        "title": "SwiftShip pickup webhook delay",
+        "status": "Monitoring",
+        "opened": "2026-08-12",
+        "match_signals": ["swiftship", "still shows booked", "pickup confirmation", "webhook", "picked up but booked"],
+        "carrier": "SwiftShip",
+        "delay_window_minutes": 20,
+        "workaround": "Verify carrier status or wait through the 20-minute known delay window before telling a customer the pickup did not occur."
+      }
+    ],
+    "resolved_issues": [
+      {
+        "id": "KI-176",
+        "title": "Address validation",
+        "resolved": "2026-07-18",
+        "guard": "Do not use this resolved issue to explain new incidents unless evidence specifically matches it."
+      }
+    ]
+  },
+  "business_calendar": {
+    "assumption": true,
+    "note": "Working hours are not defined anywhere in the supplied pack. This is an explicit product assumption, surfaced with every business-hours calculation.",
+    "start": "09:00",
+    "end": "18:00",
+    "working_weekdays": [0, 1, 2, 3, 4],
+    "hours_per_business_day": 9,
+    "timezone": "Asia/Kolkata"
+  }
+}

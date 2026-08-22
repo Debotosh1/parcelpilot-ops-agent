@@ -1,0 +1,5 @@
+account_id,account_name,plan,status,csm,contract_file,premium_support,notes
+ACCT-001,Northstar Logistics,Enterprise,active,Priya Mehta,05_Northstar_Logistics_Enterprise_Agreement.pdf,True,Strategic account. Contract contains custom SLA and cancellation terms.
+ACCT-002,LumenWorks,Growth,active,Arjun Rao,06_LumenWorks_Service_Agreement.pdf,False,Growth customer with contract-specific service credit terms.
+ACCT-003,Beacon Retail,Standard,active,Neha Kapoor,,False,No custom agreement in the supplied pack; standard policies apply.
+ACCT-004,Axis Labs,Enterprise,active,Priya Mehta,,False,Enterprise plan; standard Enterprise support policy applies.

@@ -1,0 +1,8 @@
+ticket_id,account_id,created_at,status,subject,description,channel,assigned_to,last_customer_message_at,historical_resolution
+TKT-501,ACCT-001,2026-08-16 10:30,open,All shipment creation is failing,Every user at Northstar gets HTTP 500 when creating any shipment. Existing shipments can still be viewed.,email,Rohit,2026-08-16 10:52,
+TKT-502,ACCT-002,2026-08-16 09:45,open,"Bulk upload fails for 4,200-row CSV",The CSV reaches roughly 70% and fails. Creating shipments one-by-one still works.,chat,Maya,2026-08-16 10:40,
+TKT-503,ACCT-003,2026-08-16 10:05,open,How do we change the billing contact?,Customer wants to replace the billing-contact email on their account.,email,Rohit,2026-08-16 10:05,
+TKT-504,ACCT-001,2026-08-16 10:50,open,SwiftShip order still shows BOOKED after driver pickup,"Driver collected the parcel around 10 minutes ago, but ParcelPilot still shows BOOKED.",chat,Maya,2026-08-16 10:58,
+TKT-505,ACCT-004,2026-08-16 08:30,open,Possible API key exposure,An employee accidentally posted a screenshot containing a production API key in a public channel. They are asking what to do.,email,Rohit,2026-08-16 09:10,
+TKT-450,ACCT-001,2026-07-12 14:10,closed,Cancellation fee after 30 minutes,Northstar asked whether a BOOKED shipment could be cancelled 90 minutes after booking before pickup.,email,Maya,2026-07-12 15:00,Agent told customer a INR 250 cancellation fee applied after 30 minutes.
+TKT-451,ACCT-002,2026-08-11 11:20,closed,Bulk upload fails for large CSV,"LumenWorks reported failures when uploading 3,500-row CSV files.",chat,Rohit,2026-08-11 12:10,"Agent told customer Growth plan only supports 3,000 rows."

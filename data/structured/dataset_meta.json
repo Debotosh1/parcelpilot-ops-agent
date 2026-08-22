@@ -1,0 +1,19 @@
+{
+  "dataset_snapshot": "2026-08-16 11:00",
+  "timezone": "Asia/Kolkata",
+  "currency": "INR",
+  "notes": "This is a synthetic dataset created for a hiring assessment.",
+  "important": "Some historical ticket resolutions may be incorrect. Treat them as historical context, not policy authority.",
+  "business_hours": {
+    "start": "09:00",
+    "end": "18:00",
+    "working_days": [
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri"
+    ],
+    "assumption": "Business hours are not stated in the pack. 09:00-18:00 IST Mon-Fri is an explicit product assumption used for every 'business hours/days' SLA computation, and is surfaced with each answer."
+  }
+}
