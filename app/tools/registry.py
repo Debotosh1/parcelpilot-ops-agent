@@ -491,6 +491,22 @@ TOOL_FAMILY = {
 def tool_specs() -> list[dict[str, Any]]:
     """OpenAI/Groq-compatible function schemas."""
     def fn(name: str, description: str, properties: dict[str, Any], required: list[str] | None = None):
+        required = required or []
+        # Groq-hosted models sometimes emit an explicit `null` for an optional argument
+        # instead of omitting the key. A strictly-typed schema (e.g. {"type": "number"})
+        # then fails Groq's own tool-call validation with a 400 before our code ever runs.
+        # Widen every OPTIONAL property to also accept null so that's never fatal; required
+        # properties are left strict since the model must supply a real value for those.
+        widened: dict[str, Any] = {}
+        for key, spec in properties.items():
+            spec = dict(spec)
+            if key not in required:
+                spec_type = spec.get("type")
+                if isinstance(spec_type, str) and spec_type != "null":
+                    spec["type"] = [spec_type, "null"]
+                if "enum" in spec and None not in spec["enum"]:
+                    spec["enum"] = [*spec["enum"], None]
+            widened[key] = spec
         return {
             "type": "function",
             "function": {
@@ -498,8 +514,8 @@ def tool_specs() -> list[dict[str, Any]]:
                 "description": description,
                 "parameters": {
                     "type": "object",
-                    "properties": properties,
-                    "required": required or [],
+                    "properties": widened,
+                    "required": required,
                     "additionalProperties": False,
                 },
             },
@@ -577,10 +593,10 @@ def tool_specs() -> list[dict[str, Any]]:
                 "order_id": {"type": "string"},
                 "account_id": {"type": "string"},
                 "account_name": {"type": "string"},
-                "hours_late": {"type": "number", "description": "Hours past the END of the scheduled pickup window."},
+                "hours_late": {"type": ["number", "null"], "description": "Hours past the END of the scheduled pickup window."},
                 "carrier_fault": {"type": "boolean"},
                 "customer_fault": {"type": "boolean"},
-                "shipment_fee_inr": {"type": "number"},
+                "shipment_fee_inr": {"type": ["number", "null"]},
             },
         ),
         fn(
@@ -622,7 +638,10 @@ def tool_specs() -> list[dict[str, Any]]:
                 "severity": {"type": "string", "enum": ["P1", "P2", "P3"]},
                 "reason": {"type": "string", "description": "Why escalation is warranted, citing the rule."},
                 "escalate_to": {"type": "string", "description": "e.g. Duty Manager, Security On-call, Carrier Ops"},
-                "proposed_credit_inr": {"type": "number", "description": "Include when a credit is part of the ask."},
+                "proposed_credit_inr": {
+                    "type": ["number", "null"],
+                    "description": "Include when a credit is part of the ask. Omit or pass null otherwise.",
+                },
             },
             ["ticket_id", "severity", "reason"],
         ),

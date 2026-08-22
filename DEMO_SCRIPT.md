@@ -14,7 +14,7 @@ Rehearse once: every prompt below is copy-paste from the app's example chips.
 > clause, and never performs an action without a human clicking Confirm."
 
 Show the header: snapshot `2026-08-16 11:00 Asia/Kolkata` is treated as "now", model is Groq
-`llama-3.3-70b-versatile`, the signed-in user and their account scope.
+`openai/gpt-oss-20b`, the signed-in user and their account scope.
 
 ### 0:35–1:25 — Architecture (one slide or the README diagram)
 

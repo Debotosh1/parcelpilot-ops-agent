@@ -32,7 +32,7 @@ class Settings:
     # --- LLM (Groq) -------------------------------------------------------
     groq_api_key: str = field(default_factory=lambda: os.getenv("GROQ_API_KEY", "").strip())
     groq_model: str = field(
-        default_factory=lambda: os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile").strip()
+        default_factory=lambda: os.getenv("GROQ_MODEL", "openai/gpt-oss-20b").strip()
     )
     groq_temperature: float = field(
         default_factory=lambda: float(os.getenv("GROQ_TEMPERATURE", "0.1"))

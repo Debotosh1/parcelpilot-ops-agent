@@ -6,7 +6,7 @@ retrieves the right clause, computes the answer deterministically, cites its sou
 and prepares — but never silently performs — state-changing actions.
 
 **Chosen user context:** internal support / operations staff (not customer-facing).
-**LLM:** Groq (`llama-3.3-70b-versatile` by default) for planning, tool selection and narration only.
+**LLM:** Groq (`openai/gpt-oss-20b` by default) for planning, tool selection and narration only.
 **Additional client problems addressed:** both — proactive issue detection (Problem 1) and
 trust/reliability (Problem 2).
 

@@ -37,7 +37,7 @@ uvicorn app.main:app --reload
 ```
 
 Open <http://localhost:8000>. You should see the header showing
-`snapshot 2026-08-16 11:00 Asia/Kolkata` and `groq · llama-3.3-70b-versatile`, with no orange warning
+`snapshot 2026-08-16 11:00 Asia/Kolkata` and `groq · openai/gpt-oss-20b`, with no orange warning
 bar. An orange bar means the key was not picked up — check `.env` is in the project root and restart.
 
 Stop the server with `Ctrl+C`. To start it again later: `cd` in, `.venv\Scripts\activate`, `uvicorn app.main:app --reload`.
@@ -129,7 +129,7 @@ Fill in <https://forms.gle/hLGBrDrNRmK7UAbv6> with:
 | Orange bar: "GROQ_API_KEY is not set" | `.env` missing/misplaced, or server not restarted after editing it |
 | Chat replies "I could not reach the language model" | Bad or revoked key, no internet, or Groq rate limit — the trace shows the error |
 | `ModuleNotFoundError: fastapi` | Virtualenv not activated (`.venv\Scripts\activate`) or `pip install -r requirements.txt` not run |
-| `429` from Groq | Free-tier rate limit; wait a minute, or set `GROQ_MODEL=llama-3.1-8b-instant` in `.env` |
+| `429` from Groq | Free-tier rate limit; wait a minute, or set `GROQ_MODEL=openai/gpt-oss-120b` in `.env` |
 | Answers look stale after editing a CSV | `--reload` picks up code, not data — restart the server |
 | Render build fails | Check `PYTHON_VERSION` is `3.11.9` in the service's env vars |
 

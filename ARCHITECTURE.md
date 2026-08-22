@@ -30,7 +30,7 @@ result to narrate. The model's job is language and routing.
 - **Loop.** Tool-calling loop over Groq's OpenAI-compatible API, capped at `MAX_AGENT_STEPS` (8).
   Hitting the cap returns an honest "I stopped without a confident answer" plus the trace, rather than
   an improvised answer.
-- **Model.** `llama-3.3-70b-versatile` — reliable parallel tool calling, fast enough for a live support
+- **Model.** `openai/gpt-oss-20b` — reliable parallel tool calling, fast enough for a live support
   console, and cheap. Swappable via `GROQ_MODEL`; nothing in the code is model-specific.
 - **Temperature 0.1.** Support answers should be boring and repeatable.
 - **System prompt** carries only what the model must know at runtime: who the user is, their account
