@@ -142,6 +142,7 @@ tests/                   79 tests: policy correctness, access control, retrieval
 `ARCHITECTURE.md` covers agent/tool design and trade-offs. `PRODUCT_NOTE.md` covers the product
 decisions, what was left out, what comes next and the metric. `DEMO_SCRIPT.md` is the 5-minute video
 run sheet. `AI_TOOL_USAGE.md` lists the AI tools used.
+`RUNBOOK.md` is the end-to-end guide: key → local run → tests → GitHub → deploy → video → submit.
 
 ---
 
